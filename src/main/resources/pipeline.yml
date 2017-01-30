@@ -12,3 +12,16 @@ parts:
                 name: SGM_File
                 value: ""
                 type: file
+    jie:
+        output-dir: jie_out
+        requires:
+            - input
+        page: JIE
+        parameters: []
+    visualize:
+        output-dir: viz_out
+        requires:
+            - input
+        page: Visualize
+        parameters: []
+        multi-run: true
