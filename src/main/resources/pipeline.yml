@@ -1,0 +1,14 @@
+name: "Orange Pipeline Run View"
+description: |
+    The Orange Pipeline allows a user to run JIE Multimedia Entity Extraction
+data-object: com.artistech.ee.beans.Data
+parts:
+    input:
+        requires: []
+        page: pipeline.jsp
+        output-dir: input
+        parameters:
+            - parameter:
+                name: SGM_File
+                value: ""
+                type: file
