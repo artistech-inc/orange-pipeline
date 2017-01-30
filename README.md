@@ -13,7 +13,7 @@ git clone https://github.com/artistech-inc/pipeline-base.git
 cd pipeline-base
 mvn clean install
 cd ..
-git clone https://github.com/artistech-inc/orange-pipeline-web.git
+git clone https://github.com/artistech-inc/orange-pipeline.git
 cd orange-pipeline-web
 mvn clean package
 ```
