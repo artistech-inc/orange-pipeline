@@ -20,12 +20,13 @@ mvn clean package
 
 ## Configuration
 
-Update the [WEB-INF/web.xml](https://github.com/artistech-inc/orange-pipeline-web/blob/master/src/main/webapp/WEB-INF/web.xml) file. Each Servlet that utilizes an external application/script/process must have the path to the application set. For now, this includes:
+Update the [WEB-INF/web.xml](https://github.com/artistech-inc/orange-pipeline/blob/master/src/main/webapp/META-INF/context.xml) file. Each Servlet that utilizes an external application/script/process must have the path to the application set. For now, this includes:
 
 - JIE-Multimedia
 - Visualization Generation
 
-Along with the web.xml file, the [META-INF/context.xml](https://github.com/artistech-inc/orange-pipeline-web/blob/master/src/main/webapp/META-INF/context.xml) must be configured. The `data_path` value must be somewhere that Tomcat can write to.
+Along with the web.xml file, the [META-INF/context.xml](
+https://github.com/artistech-inc/orange-pipeline/blob/master/src/main/webapp/META-INF/context.xml) must be configured. The `data_path` value must be somewhere that Tomcat can write to.
 
 ## Compilation
 
