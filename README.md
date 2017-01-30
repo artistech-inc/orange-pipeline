@@ -22,9 +22,7 @@ mvn clean package
 
 Update the [WEB-INF/web.xml](https://github.com/artistech-inc/orange-pipeline-web/blob/master/src/main/webapp/WEB-INF/web.xml) file. Each Servlet that utilizes an external application/script/process must have the path to the application set. For now, this includes:
 
-- joint_ere
-- ENIE
-- Merge Tool
+- JIE-Multimedia
 - Visualization Generation
 
 Along with the web.xml file, the [META-INF/context.xml](https://github.com/artistech-inc/orange-pipeline-web/blob/master/src/main/webapp/META-INF/context.xml) must be configured. The `data_path` value must be somewhere that Tomcat can write to.
@@ -33,7 +31,7 @@ Along with the web.xml file, the [META-INF/context.xml](https://github.com/artis
 
 This project should be able opened using Netbeans as a Maven Web-App. It will automatically detect the type of project.  
 The project can also be compiled on the command line directly using maven.  
-Depends on pipline-base project.  See above.
+Depends on pipeline-base project.  See above.
 
 ## Deployment
 
