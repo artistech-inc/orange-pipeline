@@ -67,7 +67,10 @@ public class Visualize extends HttpServlet {
             @Override
             public void run() {
                 File source = new File(data.getInput());
-                String viz_out = data.getVizOut();
+                File viz_dir = new File(data.getVizOut());
+                if(!viz_dir.exists()) {
+                    viz_dir.mkdirs();
+                }
 
                 /**
                  * JOINT ERE VIZ!
@@ -80,7 +83,7 @@ public class Visualize extends HttpServlet {
                         } catch (IOException e) {
                             Logger.getLogger(Visualize.class.getName()).log(Level.SEVERE, null, e);
                         }
-                        ProcessBuilder pb = new ProcessBuilder("python3", "ere_visualizer.py", file_list, data.getJieOut(), data.getJieOut());
+                        ProcessBuilder pb = new ProcessBuilder("python3", "ere_visualizer.py", file_list, data.getJieOut(), data.getVizOut());
                         for (String cmd : pb.command()) {
                             Logger.getLogger(Visualize.class.getName()).log(Level.WARNING, cmd);
                         }
