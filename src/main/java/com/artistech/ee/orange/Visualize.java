@@ -50,8 +50,8 @@ public class Visualize extends HttpServlet {
 
         File test_file = new File(file_list);
         if (!test_file.exists()) {
-            for (String f : data.getInputFiles()) {
-                try (java.io.BufferedWriter writer = new BufferedWriter(new FileWriter(test_file))) {
+            try (java.io.BufferedWriter writer = new BufferedWriter(new FileWriter(test_file))) {
+                for (String f : data.getInputFiles()) {
                     writer.write(f + System.lineSeparator());
                 }
             }
