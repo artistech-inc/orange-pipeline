@@ -25,6 +25,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 /**
+ * Runs the visualize process.
  *
  * @author matta
  */
@@ -153,7 +154,7 @@ public class Visualize extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Run Visualization Step";
     }// </editor-fold>
 
 }

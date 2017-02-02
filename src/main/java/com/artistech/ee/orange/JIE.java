@@ -21,6 +21,7 @@ import javax.servlet.http.Part;
 import org.apache.commons.io.IOUtils;
 
 /**
+ * Runs the JIE process.
  *
  * @author matta
  */
@@ -53,7 +54,7 @@ public class JIE extends HttpServlet {
                 }
             }
         }
-        ArrayList<PipelineBean.Part> currentParts = data.getCurrentParts();
+        ArrayList<PipelineBean.Part> currentParts = data.getPipelineParts();
         PipelineBean.Part get = currentParts.get(data.getPipelineIndex());
         PipelineBean.Parameter parameter = get.getParameter("model");
         String jie_model = parameter.getValue();
@@ -112,7 +113,7 @@ public class JIE extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Run JIE Step";
     }// </editor-fold>
 
 }
