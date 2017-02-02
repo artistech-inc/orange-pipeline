@@ -7,10 +7,6 @@
             <param-name>path</param-name>
             <param-value>/work/Documents/FOUO/EntityExtraction/JIE-Multimedia-java-master</param-value>
         </init-param>
-        <init-param>
-            <param-name>model</param-name>
-            <param-value>/models/visual_joint/alexnet</param-value>
-        </init-param>
     </servlet>
     <servlet>
         <servlet-name>Visualize</servlet-name>

@@ -5,12 +5,14 @@ package com.artistech.ee.orange;
 
 import com.artistech.ee.beans.DataManager;
 import com.artistech.ee.beans.Data;
+import com.artistech.ee.beans.PipelineBean;
 import com.artistech.utils.ExternalProcess;
 import com.artistech.utils.StreamGobbler;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +38,6 @@ public class JIE extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String jie_path = getInitParameter("path");
-        String jie_model = jie_path + getInitParameter("model");
 
         Part pipeline_id_part = request.getPart("pipeline_id");
         String pipeline_id = IOUtils.toString(pipeline_id_part.getInputStream(), "UTF-8");
@@ -52,6 +53,10 @@ public class JIE extends HttpServlet {
                 }
             }
         }
+        ArrayList<PipelineBean.Part> currentParts = data.getCurrentParts();
+        PipelineBean.Part get = currentParts.get(data.getPipelineIndex());
+        PipelineBean.Parameter parameter = get.getParameter("model");
+        String jie_model = parameter.getValue();
 
         String jie_out = data.getJieOut();
         File output_dir = new File(jie_out);

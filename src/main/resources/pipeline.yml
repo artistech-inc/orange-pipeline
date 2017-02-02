@@ -17,7 +17,13 @@ parts:
         requires:
             - input
         page: JIE
-        parameters: []
+        parameters:
+            - parameter:
+                name: model
+                value: models/visual_joint/alexnet
+                values:
+                    - models/visual_joint/alexnet
+                type: select
     visualize:
         output-dir: viz_out
         requires:
