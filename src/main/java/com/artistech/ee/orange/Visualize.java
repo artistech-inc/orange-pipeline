@@ -9,8 +9,10 @@ import com.artistech.utils.ExternalProcess;
 import com.artistech.utils.StreamGobbler;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -60,7 +62,7 @@ public class Visualize extends HttpServlet {
 
         PipedInputStream in = new PipedInputStream();
         final PipedOutputStream out = new PipedOutputStream(in);
-        StreamGobbler sg = new StreamGobbler(in);
+        StreamGobbler sg = new StreamGobbler(in, null);
         sg.start();
 
         final OutputStreamWriter bos = new OutputStreamWriter(out);
@@ -69,7 +71,7 @@ public class Visualize extends HttpServlet {
             public void run() {
                 File source = new File(data.getInput());
                 File viz_dir = new File(data.getVizOut());
-                if(!viz_dir.exists()) {
+                if (!viz_dir.exists()) {
                     viz_dir.mkdirs();
                 }
 
@@ -92,7 +94,14 @@ public class Visualize extends HttpServlet {
                         pb.directory(new File(viz_path));
                         pb.redirectErrorStream(true);
                         Process proc = pb.start();
-                        StreamGobbler sg = new StreamGobbler(proc.getInputStream());
+                        OutputStream os = new FileOutputStream(new File(data.getConsoleFile()), true);
+                        StreamGobbler sg = new StreamGobbler(proc.getInputStream(), os);
+                        sg.write("Visualize JIE");
+                        StringBuilder sb = new StringBuilder();
+                        for (String cmd : pb.command()) {
+                            sb.append(cmd).append(" ");
+                        }
+                        sg.write(sb.toString().trim());
                         sg.start();
 
                         try {
@@ -100,7 +109,7 @@ public class Visualize extends HttpServlet {
                         } catch (InterruptedException ex) {
                             Logger.getLogger(JIE.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        bos.write("JIE VIZ" + System.lineSeparator());
+//                        bos.write("JIE VIZ" + System.lineSeparator());
                         bos.write(sg.getUpdateText() + System.lineSeparator());
                         bos.flush();
                     } catch (IOException ex) {
