@@ -40,7 +40,6 @@ public class JIE extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String jie_path = getInitParameter("path");
 
         Part pipeline_id_part = request.getPart("pipeline_id");
         String pipeline_id = IOUtils.toString(pipeline_id_part.getInputStream(), "UTF-8");
@@ -60,6 +59,8 @@ public class JIE extends HttpServlet {
         PipelineBean.Part get = currentParts.get(data.getPipelineIndex());
         PipelineBean.Parameter parameter = get.getParameter("model");
         String jie_model = parameter.getValue();
+
+        String jie_path = get.getParameter("path") != null ? get.getParameter("path").getValue() : getInitParameter("path");
 
         String jie_out = data.getJieOut();
         File output_dir = new File(jie_out);
