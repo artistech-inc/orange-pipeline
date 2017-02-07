@@ -5,12 +5,16 @@ package com.artistech.ee.orange;
 
 import com.artistech.ee.beans.DataManager;
 import com.artistech.ee.beans.Data;
+import com.artistech.ee.beans.PipelineBean;
 import com.artistech.utils.ExternalProcess;
 import com.artistech.utils.StreamGobbler;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +23,7 @@ import javax.servlet.http.Part;
 import org.apache.commons.io.IOUtils;
 
 /**
+ * Runs the JIE process.
  *
  * @author matta
  */
@@ -35,8 +40,6 @@ public class JIE extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String jie_path = getInitParameter("path");
-        String jie_model = jie_path + getInitParameter("model");
 
         Part pipeline_id_part = request.getPart("pipeline_id");
         String pipeline_id = IOUtils.toString(pipeline_id_part.getInputStream(), "UTF-8");
@@ -46,12 +49,18 @@ public class JIE extends HttpServlet {
 
         File test_file = new File(file_list);
         if (!test_file.exists()) {
-            for (String f : data.getInputFiles()) {
-                try (java.io.BufferedWriter writer = new BufferedWriter(new FileWriter(test_file))) {
+            try (java.io.BufferedWriter writer = new BufferedWriter(new FileWriter(test_file))) {
+                for (String f : data.getInputFiles()) {
                     writer.write(f + System.lineSeparator());
                 }
             }
         }
+        ArrayList<PipelineBean.Part> currentParts = data.getPipelineParts();
+        PipelineBean.Part get = currentParts.get(data.getPipelineIndex());
+        PipelineBean.Parameter parameter = get.getParameter("model");
+        String jie_model = parameter.getValue();
+
+        String jie_path = get.getParameter("path") != null ? get.getParameter("path").getValue() : getInitParameter("path");
 
         String jie_out = data.getJieOut();
         File output_dir = new File(jie_out);
@@ -61,7 +70,14 @@ public class JIE extends HttpServlet {
         pb.directory(new File(jie_path));
         pb.redirectErrorStream(true);
         Process proc = pb.start();
-        StreamGobbler sg = new StreamGobbler(proc.getInputStream());
+        OutputStream os = new FileOutputStream(new File(data.getConsoleFile()), true);
+        StreamGobbler sg = new StreamGobbler(proc.getInputStream(), os);
+        sg.write("JIE");
+        StringBuilder sb = new StringBuilder();
+        for (String cmd : pb.command()) {
+            sb.append(cmd).append(" ");
+        }
+        sg.write(sb.toString().trim());
         sg.start();
         ExternalProcess ex_proc = new ExternalProcess(sg, proc);
         data.setProc(ex_proc);
@@ -107,7 +123,7 @@ public class JIE extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Run JIE Step";
     }// </editor-fold>
 
 }

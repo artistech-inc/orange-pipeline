@@ -2,10 +2,11 @@ name: "Orange Pipeline Run View"
 description: |
     The Orange Pipeline allows a user to run JIE Multimedia Entity Extraction
 data-object: com.artistech.ee.beans.Data
+data-dir: /work/Dev/orange-pipeline-web/data
 parts:
     input:
         requires: []
-        page: pipeline.jsp
+        page: InputFile
         output-dir: input
         parameters:
             - parameter:
@@ -17,11 +18,25 @@ parts:
         requires:
             - input
         page: JIE
-        parameters: []
+        parameters:
+            - parameter:
+                name: model
+                value: models/visual_joint/alexnet
+                values:
+                    - models/visual_joint/alexnet
+                type: select
+            - parameter:
+                name: path
+                value: /work/Documents/FOUO/EntityExtraction/JIE-Multimedia-java-master
+                type: hidden
     visualize:
         output-dir: viz_out
         requires:
             - input
         page: Visualize
-        parameters: []
         multi-run: true
+        parameters:
+            - parameter:
+                name: path
+                value: /work/Documents/FOUO/EntityExtraction/green_pipeline/visualization
+                type: hidden
