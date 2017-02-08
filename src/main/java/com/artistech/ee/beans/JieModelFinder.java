@@ -54,6 +54,7 @@ public class JieModelFinder implements PipelineYamlUpdater {
                         get.add(val);
                     }
                 }
+                Collections.sort(get);
             }
         }
     }
